@@ -1,5 +1,5 @@
 from pandas import read_csv
-from functions import format_date, format_time
+from functions import format_date, format_time, format_date_time
 
 # อ่านข้อมูลไฟล์ csv ได้ dataframe
 df = read_csv("../db/data/data.csv")
@@ -8,37 +8,33 @@ df = read_csv("../db/data/data.csv")
 df.info()
 print(df.head())
 
-# ลบตอลัมน์แรก
-df.drop(columns=["timestamp"], axis=1, inplace=True)
-
-# สร้าง list มาเก็บ date time
-date_time = []
-
 # วน loop แก้ไขทีละคอลัมน์
 for i in df.index:
     # เปลี่ยนรูปแบบวันที่จาก DD/MM/YYYY เป็น YYYY-MM-DD
-    date, month, year = df["date"][i].split("/")
-    df.loc[i, "date"] = format_date(date, month, year)
+    date, month, year = df["Date"][i].split("/")
+    df.loc[i, "Date"] = format_date(date, month, year)
 
     # แก้ไขเวลาที่เป็นเลข 1 หลักให้เป็น 2 หลักทั้งหมดเช่น 1 เป็น 01
-    hours, minutes, seconds = df["time"][i].split(":")
-    df.loc[i, "time"] = format_time(hours, minutes, seconds)
+    hours, minutes, seconds = df["Time"][i].split(":")
+    df.loc[i, "Time"] = format_time(hours, minutes, seconds)
 
-    # แก้ไขรูปแบบ timestamp อันเก่าจาก DD/MM/YYYY, HH:MI:SS เป็น YYYY-MM-DD HH:MI:SS
-    new_date_time = (
-        format_date(date, month, year) + " " + format_time(hours, minutes, seconds)
-    )
-    date_time.append(new_date_time)
+    # # แก้ไขรูปแบบ timestamp อันเก่าจาก DD/MM/YYYY, HH:MI:SS เป็น YYYY-MM-DD HH:MI:SS
+    df.loc[i, "Timestamp"] = format_date_time(year, month, date, hours, minutes, seconds)
 
-# เพิ่มแถวใหม่
-df.insert(0, "datetime", date_time)
-print(df.head(10))
+    # # เพิ่มข้อมูลในคอลัมน์ Expense_Type, Major_ID, Major_Name, Programe_Name, Transaction_ID
+    df.loc[i, "Expense_Type"] = "ค่าใช้จ่ายพื้นฐาน"
+    df.loc[i, "Major_ID"] = "S06"
+    df.loc[i, "Major_Name"] = "วิทยาการคอมพิวเตอร์"
+    df.loc[i, "Programe_Name"] = "พิเศษ"
+    df.loc[i, "Transaction_ID"] = i + 1
+    
+# แก้ไขชนิดของคอลัมน์
+df[["Transaction_ID"]] = df[["Transaction_ID"]].astype("int")
+df[["Income"]] = df[["Income"]].astype("float")
+df[["Expenses"]] = df[["Expenses"]].astype("float")
+df[["Date"]] = df[["Date"]].astype("object")
+df[["Time"]] = df[["Time"]].astype("object")
+df[["Timestamp"]] = df[["Timestamp"]].astype("object")
 
-# แปลงชนิดข้อมูลของแต่ละคอลัมน์
-df[["datetime"]] = df[["datetime"]].astype("datetime64[ms]")
-df[["income"]] = df[["income"]].astype("float16")
-df[["expenses"]] = df[["expenses"]].astype("float16")
-print(df.dtypes)
-
-# ส่งออกเป็นไฟล์ csv อันใหม่
+# # ส่งออกเป็นไฟล์ csv อันใหม่
 df.to_csv("../db/data/new_data.csv", index=False)

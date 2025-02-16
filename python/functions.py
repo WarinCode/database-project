@@ -9,3 +9,6 @@ def format_time(hours, minutes, seconds):
     minutes = "0" + minutes if len(minutes) == 1 else minutes
     new_time = hours + ":" + minutes + ":" + seconds
     return new_time
+
+def format_date_time(year, month, date, hours, minutes, seconds):
+    return format_date(date, month, year) + " " + format_time(hours, minutes, seconds)

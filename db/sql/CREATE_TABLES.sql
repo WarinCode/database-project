@@ -19,6 +19,10 @@ CREATE TABLE Transactions (
     Income FLOAT NULL,
     Expenses FLOAT NULL,    
 )
+CREATE TABLE Expense_Types (
+    Transaction_ID INT PRIMARY KEY NOT NULL, 
+    Expense_Type VARCHAR(30) NULL
+)
 CREATE TABLE Transaction_Timestamps (
     Transaction_ID INT PRIMARY KEY NOT NULL,
     Timestamp DATETIME NOT NULL,
@@ -36,5 +40,8 @@ CREATE TABLE Student_Transactions (
         REFERENCES Students(Student_ID),
     CONSTRAINT fk_transaction_timestamp
         FOREIGN KEY (Transaction_ID)
-        REFERENCES Transaction_Timestamps(Transaction_ID)
+        REFERENCES Transaction_Timestamps(Transaction_ID),
+    CONSTRAINT fk_expense_type
+        FOREIGN KEY(Transaction_ID)
+        REFERENCES Expense_Types(Transaction_ID)
 )

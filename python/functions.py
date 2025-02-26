@@ -12,3 +12,6 @@ def format_time(hours, minutes, seconds):
 
 def format_date_time(year, month, date, hours, minutes, seconds):
     return format_date(date, month, year) + " " + format_time(hours, minutes, seconds)
+
+def get_null(val):
+    return "NULL" if str(val).lower().strip() in ('nan', '0.0', '') else val

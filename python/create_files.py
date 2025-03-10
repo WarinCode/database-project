@@ -18,6 +18,8 @@ with open("../db/sql/INSERT_STUDENTS.sql", "w", encoding="utf8") as file:
         file.write(
             f"INSERT INTO Students VALUES({std_id}, '{std_name}', '{email}', '{major_id}');\n\n"
         )
+    
+    print("เขียนไฟล์ INSERT_STUDENTS.sql สำเร็จ")
 
 # เขียนไฟล์ insert ข้อมูลสำหรับ table Transactions
 with open("../db/sql/INSERT_TRANSACTIONS.sql", "w", encoding="utf8") as file2:
@@ -36,11 +38,16 @@ with open("../db/sql/INSERT_TRANSACTIONS.sql", "w", encoding="utf8") as file2:
         file2.write(
             f"INSERT INTO Transactions VALUES('{timestamp}', {std_id}, '{date}', '{time}', {income}, {expenses}, {expense_type});\n\n"
         )
+    
+    print("เขียนไฟล์ INSERT_TRANSACTIONS.sql สำเร็จ")
 
 with open("../db/sql/INSERT_MAJORS.sql", "w", encoding="utf8") as file3:
     file3.write("USE DB_PROJECT;\n\n")
     
-    major_id = df.loc[104, "Major_ID"]
-    major_name = df.loc[104, "Major_Name"]
-    program_name = df.loc[104, "Program_Name"]
-    file3.write(f"INSERT INTO Majors VALUES({major_id}, '{major_name}', '{program_name}');")
+    major_id = df.loc[0, "Major_ID"]
+    major_name = df.loc[0, "Major_Name"]
+    program_name = df.loc[0, "Program_Name"]
+    file3.write(f"INSERT INTO Majors VALUES('{major_id}', '{major_name}', '{program_name}');")
+    
+    print('เขียนไฟล์ INSERT_MAJORS.sql สำเร็จ')
+    

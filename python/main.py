@@ -22,3 +22,4 @@ for i in df.index:
 
 # ส่งออกเป็นไฟล์ csv อันใหม่
 df.to_csv("../db/data/new_data.csv", index=False)
+print("สร้างไฟล์ new_data.csv สำเร็จ")

@@ -19,6 +19,6 @@ CREATE TABLE Transactions (
     Time TIME NOT NULL,
     Income FLOAT NULL,
     Expenses FLOAT NULL,
-    Expesnse_Type VARCHAR(50) NULL,
+    Expense_Type VARCHAR(50) NULL,
     CONSTRAINT fk_student FOREIGN KEY (Student_ID) REFERENCES Students (Student_ID)
 )
